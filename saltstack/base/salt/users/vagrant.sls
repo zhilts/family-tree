@@ -1,3 +1,8 @@
+vagrant:
+  user:
+    - present
+    - home: /home/vagrant
+
 /home/vagrant/.bashrc:
   file.managed:
 #    - template: jinja
