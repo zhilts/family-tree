@@ -1,10 +1,11 @@
 from fabric.decorators import task
-from fabric.operations import local
+from fabric.operations import local, os
 
+DJ_PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 @task()
 def pysetup():
-    local('./pysetup.sh')
+    local('{project_path}/pysetup.sh'.format(project_path=DJ_PROJECT_PATH))
 
 
 @task()
@@ -14,7 +15,9 @@ def runserver():
 
 @task()
 def manage(command):
-    local('./pyenv.sh ./manage.py {command}'.format(command=command))
+    local('{project_path}/pyenv.sh {project_path}/manage.py {command}'
+          .format(command=command, project_path=DJ_PROJECT_PATH)
+          )
 
 
 @task
@@ -34,5 +37,5 @@ def migrate():
 
 @task(alias='rdb')
 def recreate_database():
-    local('rm -rf ./db.sqlite3')
+    local('rm -rf {project_path}/db.sqlite3'.format(project_path=DJ_PROJECT_PATH))
     migrate()

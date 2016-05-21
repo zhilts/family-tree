@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+PROJECT_ROOT=$(dirname ${BASH_SOURCE[0]})
+
 
 if type greadlink > /dev/null 2>&1; then
     READ_LINK=`which greadlink`
@@ -9,7 +11,7 @@ fi
 
 PYENV_PATH=`$READ_LINK -f $0`
 SCR_DIR=$(dirname $($READ_LINK -f $0))
-PYENV=$($READ_LINK -f "./env")
+PYENV=$($READ_LINK -f ${PROJECT_ROOT}"/env")
 
 if ! [[ -d $PYENV ]]; then
     echo "error: virtual env not found."
@@ -21,8 +23,4 @@ if [[ ${@} == "" ]]; then
 fi
 
 . ${PYENV}/bin/activate
-if [[ -f $1 ]]; then
-    exec "./$@"
-else
-    exec "$@"
-fi
+exec "$@"
